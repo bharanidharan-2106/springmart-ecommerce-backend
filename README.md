@@ -3,31 +3,37 @@
 ## Role-Based Multi-Vendor E-Commerce System  
 Built using **Spring Boot, Spring Security, JWT & MySQL**
 
+
+A production-style, role-based multi-vendor e-commerce backend system built using Spring Boot, Spring Security (JWT), and MySQL. The application simulates a real-world marketplace platform with secure authentication, modular architecture, and domain-driven design.
+
 ---
 
 ## Overview
 
-SpringMart is a role-based multi-vendor e-commerce backend system designed to simulate a real-world marketplace platform similar to Amazon or Flipkart.
+SpringMart is a backend system designed to model a scalable e-commerce platform similar to Amazon or Flipkart. It supports multiple user roles, enforces business rules, and provides secure RESTful APIs for managing products, orders, and user interactions.
 
-The system supports:
-
-- Multi-role architecture (Admin, Merchant, Customer)
-- Secure JWT-based authentication
-- Role-Based Access Control (RBAC)
-- Merchant approval workflow
-- Transactional order processing
-- Review & rating system
-- Stock auto-management
-
-The application follows a **Monolithic Layered Architecture** and exposes RESTful APIs.
+The system is built using a layered monolithic architecture with a strong focus on security, maintainability, and real-world applicability.
 
 ---
 
-##  Architecture
+## Key Highlights
+
+* Role-based multi-vendor architecture (Admin, Merchant, Customer)
+* JWT-based stateless authentication and authorization
+* Fine-grained Role-Based Access Control (RBAC)
+* Transactional order processing with stock management
+* Merchant approval workflow before system access
+* Review and rating system with business rule enforcement
+* Clean layered architecture with separation of concerns
+* DTO-based API design for structured data exchange
+
+---
+
+## Architecture
 
 Layered Monolithic Architecture:
 
-```
+```text id="yq4f0g"
 Controller Layer
         ↓
 Service Layer
@@ -39,27 +45,27 @@ MySQL Database
 
 ### Layer Responsibilities
 
-| Layer        | Responsibility |
-|-------------|---------------|
-| Controller  | REST API handling |
-| Service     | Business logic & validation |
-| Repository  | Database operations (JPA/Hibernate) |
-| Security    | JWT authentication & RBAC |
+| Layer      | Responsibility                                |
+| ---------- | --------------------------------------------- |
+| Controller | Handles REST API requests and responses       |
+| Service    | Business logic and validation                 |
+| Repository | Data access using JPA/Hibernate               |
+| Security   | Authentication and authorization (JWT + RBAC) |
 
 ---
 
-##  Security Implementation
+## Security Implementation
 
-- JWT-based stateless authentication
-- BCrypt password encryption
-- Role-based authorization using Spring Security
-- Protected API endpoints
-- CSRF disabled for REST APIs
-- Global exception handling
+* Stateless authentication using JWT
+* Password encryption using BCrypt
+* Role-based authorization via Spring Security
+* Secured API endpoints based on user roles
+* CSRF disabled for REST APIs
+* Centralized exception handling
 
-### Role Authorization Example
+### Role-Based Access Example
 
-```java
+```java id="8wslq6"
 .requestMatchers("/api/admin/**").hasRole("ADMIN")
 .requestMatchers("/api/merchant/**").hasRole("MERCHANT")
 .requestMatchers("/api/customer/**").hasRole("CUSTOMER")
@@ -67,176 +73,185 @@ MySQL Database
 
 ---
 
-## User Roles & Capabilities
+## User Roles and Capabilities
 
-### 🔹 ADMIN
-- Approve / Reject merchants
-- View all users
-- Moderate products
-- Hard delete products
-- Monitor platform statistics
+### Admin
 
-### 🔹 MERCHANT
-- Add / Update products
-- Soft delete products
-- Manage stock
-- View merchant-specific orders
-- Requires admin approval before login
+* Approve or reject merchant registrations
+* View and manage all users
+* Moderate and delete products
+* Monitor platform activity
 
-### 🔹 CUSTOMER
-- Browse active products
-- Search & filter products
-- Manage cart
-- Place orders (COD simulation)
-- Submit reviews (only after purchase)
-- View order history
+### Merchant
 
----
+* Add, update, and manage products
+* Perform soft delete operations
+* Manage inventory and stock levels
+* Access merchant-specific orders
+* Requires admin approval before activation
 
-##  Core Modules
+### Customer
 
-- Authentication Module (JWT)
-- Admin Module
-- Merchant Module
-- Customer Module
-- Cart Module
-- Order Module (Transactional)
-- Review & Rating Module
+* Browse and search products
+* Manage cart and place orders
+* View order history
+* Submit reviews (restricted to purchased products)
 
 ---
 
-##  Database Design
+## Core Modules
+
+* Authentication Module (JWT)
+* Admin Module
+* Merchant Module
+* Customer Module
+* Cart Module
+* Order Module (Transactional)
+* Review and Rating Module
+
+---
+
+## Database Design
 
 ### Main Entities
 
-- User
-- Product
-- CartItem
-- Order
-- OrderItem
-- Review
-- Role (Enum)
+* User
+* Product
+* CartItem
+* Order
+* OrderItem
+* Review
+* Role (Enum)
 
 ### Key Relationships
 
-- One Merchant → Many Products
-- One Customer → Many Orders
-- One Order → Many OrderItems
-- One Product → Many Reviews
-- One Customer → Many CartItems
+* One Merchant → Many Products
+* One Customer → Many Orders
+* One Order → Many OrderItems
+* One Product → Many Reviews
+* One Customer → Many CartItems
 
 ---
 
-##  Business Rules Implemented
+## Business Rules Implemented
 
-✔ Merchant must be approved before login  
-✔ Customer cannot review without purchase  
-✔ Stock reduces upon order placement  
-✔ Product auto-deactivates when stock = 0  
-✔ Soft delete for merchant products  
-✔ Hard delete for admin  
-✔ JWT required for protected APIs  
-✔ Role validation at API level  
-
----
-
-##  Technologies Used
-
-- Java 17
-- Spring Boot
-- Spring MVC
-- Spring Data JPA
-- Hibernate
-- Spring Security
-- JWT (JSON Web Token)
-- MySQL
-- Maven
-- Jakarta Validation
-
+* Merchant must be approved before login
+* Customers can review only purchased products
+* Stock updates automatically after order placement
+* Products are deactivated when stock reaches zero
+* Soft delete for merchant-owned products
+* Hard delete privileges restricted to admin
+* JWT required for all protected endpoints
+* Role validation enforced at API level
 
 ---
 
-##  How to Run the Project
+## Technology Stack
 
-###  Clone Repository
+### Backend
 
-```bash
-git clone https://github.com/YOUR_USERNAME/springmart-backend.git
-cd springmart-backend
+* Java 17
+* Spring Boot
+* Spring MVC
+* Spring Data JPA (Hibernate)
+
+### Security
+
+* Spring Security
+* JWT (JSON Web Token)
+
+### Database
+
+* MySQL
+
+### Tools
+
+* Maven
+* Postman
+
+---
+
+## Setup and Installation
+
+### 1. Clone Repository
+
+```bash id="u3v7t0"
+git clone https://github.com/bharanidharan-2106/springmart-ecommerce-backend.git
+cd springmart-ecommerce-backend
 ```
 
-### Create MySQL Database
+---
 
-```sql
+### 2. Configure Database
+
+Create database:
+
+```sql id="b4j2rf"
 CREATE DATABASE springmart;
 ```
 
-###  Configure Application Properties
+---
+
+### 3. Configure Application Properties
 
 Create:
 
-```
+```text id="a0m7rn"
 src/main/resources/application.properties
 ```
 
 Use `application-example.properties` as reference.
 
-### Run Application
+Note:
+The `application.properties` file is excluded from version control to protect sensitive configuration such as database credentials.
 
-```bash
+---
+
+### 4. Run the Application
+
+```bash id="6xq1je"
 mvn spring-boot:run
 ```
 
-Or run via Spring Tool Suite.
+Application runs at:
 
-Server runs at:
-
-```
+```text id="6j5qz4"
 http://localhost:8080
 ```
 
 ---
 
-##  Security Notice
+## API Testing
 
-The `application.properties` file is excluded from version control for security reasons.
+APIs can be tested using:
 
-Use the provided `application-example.properties` file to configure your local environment.
-
----
-
-##  API Testing
-
-You can test APIs using:
-
-- Postman
-
+* Postman
 
 ---
 
-##  Limitations
+## Limitations
 
-- No payment gateway integration
-- No image upload system
-- No distributed caching
-- Monolithic architecture
-- No email notification system
-
----
-
-##  Key Highlights
-
-- Production-style RBAC implementation
-- Transactional order management
-- Secure JWT-based authentication
-- Real-world business rule enforcement
-- Clean layered architecture
-- DTO-based API design
+* No payment gateway integration
+* No image upload support
+* No distributed caching
+* Monolithic architecture (non-microservices)
+* No email notification system
 
 ---
 
-## Author
+## Key Engineering Focus
 
-Developed as a backend system to demonstrate advanced Spring Boot architecture, security implementation, and real-world e-commerce domain modeling.
+* Secure backend design using JWT and RBAC
+* Real-world domain modeling for e-commerce systems
+* Transaction consistency in order processing
+* Clean code practices and modular architecture
+* Scalable and maintainable backend structure
 
 ---
+
+
+## Note
+
+This project is developed for learning and demonstration purposes, focusing on backend architecture, security implementation, and real-world application design using Spring Boot.
+
+
